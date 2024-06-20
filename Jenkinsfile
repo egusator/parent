@@ -14,7 +14,7 @@ pipeline {
             }
         }
 
-        stage('prepare') {
+        stage('Prepare') {
             steps {
                 dir ('/out') {
                     sh 'rm -rf snapshot && mkdir -p snapshot'
@@ -24,7 +24,7 @@ pipeline {
 		    sh 'rm -f ../../luwrain/src/main/resources/org/luwrain/core/sound/* && cp *.wav ../../luwrain/src/main/resources/org/luwrain/core/sound/'
             }
         }
-}
+	}
 
         stage('Build') {
             steps {
@@ -36,7 +36,7 @@ pipeline {
             }
         }
 
-    stage ('snapshot') {
+    stage ('Snapshot') {
         steps {
             dir ('base/scripts') {
                 sh './lwr-snapshot /out/snapshot'
@@ -46,5 +46,16 @@ pipeline {
             }
         }
     }
+	    
+    stage('Generate win dist') {
+            steps {
+                dir('base/scripts') {
+                    sh './lwr-dist-win /tmp/lwr'
+                }
+		dir('/tmp/lwr') {
+		    sh 'docker run --rm -i -v "$(pwd):/work" amake/innosetup Luwrain.iss'
+		}
+            }
+        }
     }
 }
