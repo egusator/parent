@@ -52,7 +52,7 @@ pipeline {
                 dir('base/scripts') {
                     sh './lwr-dist-win /out/win_generated_files'
                 }
-		dir('/out/win_generated_files/installer-x64') {
+		dir('out/win_generated_files/installer-x64') {
 		    sh 'docker run --rm -i -v "$(pwd):/work" amake/innosetup Luwrain.iss'
 		}
             }
