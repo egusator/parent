@@ -50,9 +50,9 @@ pipeline {
     stage('Generate win dist') {
             steps {
                 dir('base/scripts') {
-                    sh './lwr-dist-win /tmp/lwr'
+                    sh './lwr-dist-win /out/win_generated_files'
                 }
-		dir('/tmp/lwr') {
+		dir('/out/win_generated_files') {
 		    sh 'docker run --rm -i -v "$(pwd):/work" amake/innosetup Luwrain.iss'
 		}
             }
